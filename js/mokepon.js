@@ -1,9 +1,13 @@
 let ataqueJugador
 let ataqueEnemigo 
+let resultado
+let vidasJugador = 3
+let vidasEnemigo = 3
 
 function iniciarJuego() {
     let botonMascotaJugador = document.getElementById('boton-mascota')
     botonMascotaJugador.addEventListener('click', seleccionarMascotaJugador)
+
 
     let botonFuego = document.getElementById('boton-fuego')
     botonFuego.addEventListener('click', ataqueFuego)
@@ -11,8 +15,6 @@ function iniciarJuego() {
     botonAgua.addEventListener('click', ataqueAgua)
     let botonPlanta = document.getElementById('boton-planta')
     botonPlanta.addEventListener('click', ataquePlanta)
-
-    //ataqueEnemigo = seleccionarAtaqueEnemigo()
 }
 
 function seleccionarMascotaJugador() {
@@ -104,14 +106,17 @@ function seleccionarAtaqueEnemigo() {
     }
     alert("El enemigo ataca con: " + ataqueEnemigo)
 
-    crearMensaje()
+    //while (vidasEnemigo > 0 || vidasJugador > 0) {
+    combate(ataqueJugador, ataqueEnemigo)
+    //crearMensaje()
+    //}
 }
 
-function crearMensaje() {
+function crearMensaje(final) {
     let sectionMensajes = document.getElementById('Mensajes') // Creo variable con la sección donde quiero insertar mis parrafos
 
     let parrafo = document.createElement('p') // inserto un nuevo parrafo en mi HTML con el metodo createElement
-    parrafo.innerHTML = 'Tu mascota atacó con ' + ataqueJugador + ' , la mascota del enemigo atacó con ' + ataqueEnemigo + '. Resultado: ' // Creo los parrafos que quiero insertar
+    parrafo.innerHTML = 'Tu mascota atacó con ' + ataqueJugador + ' , la mascota del enemigo atacó con ' + ataqueEnemigo + '. Resultado: ' + final // Creo los parrafos que quiero insertar
 
     sectionMensajes.appendChild(parrafo) // Inserto en la sección escogida primero el parrafo armado despues. 
 }
@@ -119,6 +124,22 @@ function crearMensaje() {
 function aleatorio(min, max) {
     return Math.floor(Math.random() * (max - min + 1) + min)
 }
+
+function combate(ataque1, ataque2) {
+    if (ataque1 == ataque2) {
+        resultado = 'Empataron'
+        crearMensaje(resultado)
+    } else if ((ataque1 == 'FUEGO' && ataque2 == 'PLANTA') || (ataque1 == 'PLANTA' && ataque2 == 'AGUA') || (ataque1 == 'AGUA' && ataque2 == 'FUEGO')) {
+        resultado = 'Ganaste'
+        vidasEnemigo--
+        crearMensaje(resultado)
+    } else {
+        resultado = 'Perdiste'
+        vidasJugador--
+        crearMensaje(resultado)
+    }
+    }
+
 
 window.addEventListener('load', iniciarJuego) // Metodo de window para que el codigo JS se corra luego de que se cargué el HTML completo
 // De esta forma puedo dejar el script en el head (buena practica) y permitir que los botones funcionen sin pasar el scrip al final del
