@@ -5,9 +5,15 @@ let vidasJugador = 3
 let vidasEnemigo = 3
 
 function iniciarJuego() {
+
+    let sectionSeleccionarAtaque = document.getElementById('seleccionar-ataque')
+    sectionSeleccionarAtaque.style.display = 'none'
+
+    let sectionReiniciar = document.getElementById('Reiniciar')
+    sectionReiniciar.style.display = 'none'
+
     let botonMascotaJugador = document.getElementById('boton-mascota')
     botonMascotaJugador.addEventListener('click', seleccionarMascotaJugador)
-
 
     let botonFuego = document.getElementById('boton-fuego')
     botonFuego.addEventListener('click', ataqueFuego)
@@ -15,9 +21,18 @@ function iniciarJuego() {
     botonAgua.addEventListener('click', ataqueAgua)
     let botonPlanta = document.getElementById('boton-planta')
     botonPlanta.addEventListener('click', ataquePlanta)
+
+    let botonReiniciar = document.getElementById('boton-reiniciar')
+    botonReiniciar.addEventListener('click', reiniciarJuego)
 }
 
 function seleccionarMascotaJugador() {
+    let sectionSeleccionarAtaque = document.getElementById('seleccionar-ataque')
+    sectionSeleccionarAtaque.style.display = 'block'
+
+    let sectionSeleccionarMascota = document.getElementById('seleccionar-mascota')
+    sectionSeleccionarMascota.style.display = 'none'
+
     let inputHipodoge = document.getElementById('Hipodoge')
     let inputCapipeyo = document.getElementById('Capipeyo')
     let inputRatigueya = document.getElementById('Ratigueya')
@@ -76,21 +91,21 @@ function seleccionarMascotaEnemigo() {
 
 function ataqueFuego() {
     ataqueJugador = 'FUEGO'
-    alert("El jugador ataca con: " + ataqueJugador)
+    //alert("El jugador ataca con: " + ataqueJugador)
     //ataqueEnemigo = seleccionarAtaqueEnemigo()
     seleccionarAtaqueEnemigo()
 }
 
 function ataqueAgua() {
     ataqueJugador = 'AGUA'
-    alert("El jugador ataca con: " + ataqueJugador)
+    //alert("El jugador ataca con: " + ataqueJugador)
     //ataqueEnemigo = seleccionarAtaqueEnemigo()
     seleccionarAtaqueEnemigo()
 }
 
 function ataquePlanta() {
     ataqueJugador = 'PLANTA'
-    alert("El jugador ataca con: " + ataqueJugador)
+    //alert("El jugador ataca con: " + ataqueJugador)
     //ataqueEnemigo = seleccionarAtaqueEnemigo()
     seleccionarAtaqueEnemigo()
 }
@@ -104,7 +119,7 @@ function seleccionarAtaqueEnemigo() {
     } else {
         ataqueEnemigo = 'PLANTA'
     }
-    alert("El enemigo ataca con: " + ataqueEnemigo)
+    //alert("El enemigo ataca con: " + ataqueEnemigo)
 
     //while (vidasEnemigo > 0 || vidasJugador > 0) {
     combate(ataqueJugador, ataqueEnemigo)
@@ -116,9 +131,26 @@ function crearMensaje(final) {
     let sectionMensajes = document.getElementById('Mensajes') // Creo variable con la sección donde quiero insertar mis parrafos
 
     let parrafo = document.createElement('p') // inserto un nuevo parrafo en mi HTML con el metodo createElement
+
     parrafo.innerHTML = 'Tu mascota atacó con ' + ataqueJugador + ' , la mascota del enemigo atacó con ' + ataqueEnemigo + '. Resultado: ' + final // Creo los parrafos que quiero insertar
 
     sectionMensajes.appendChild(parrafo) // Inserto en la sección escogida primero el parrafo armado despues. 
+}
+
+function crearMensajeFinal(resultadoFinal) {
+    let sectionMensajes = document.getElementById('Mensajes')
+
+    let parrafo = document.createElement('p')
+    parrafo.innerHTML = resultadoFinal
+
+    sectionMensajes.appendChild(parrafo)
+
+    let botonFuego = document.getElementById('boton-fuego')
+    botonFuego.disabled = true
+    let botonAgua = document.getElementById('boton-agua') 
+    botonAgua.disabled = true
+    let botonPlanta = document.getElementById('boton-planta')
+    botonPlanta.disabled = true
 }
 
 function aleatorio(min, max) {
@@ -126,19 +158,48 @@ function aleatorio(min, max) {
 }
 
 function combate(ataque1, ataque2) {
+    let spanVidasJugador = document.getElementById("vidas-jugador")
+    let spanVidasEnemigo = document.getElementById("vidas-enemigo")
+
+
     if (ataque1 == ataque2) {
         resultado = 'Empataron'
         crearMensaje(resultado)
     } else if ((ataque1 == 'FUEGO' && ataque2 == 'PLANTA') || (ataque1 == 'PLANTA' && ataque2 == 'AGUA') || (ataque1 == 'AGUA' && ataque2 == 'FUEGO')) {
         resultado = 'Ganaste'
         vidasEnemigo--
+        spanVidasEnemigo.innerHTML = vidasEnemigo
+        spanVidasJugador.innerHTML = vidasJugador
         crearMensaje(resultado)
     } else {
         resultado = 'Perdiste'
         vidasJugador--
+        spanVidasJugador.innerHTML = vidasJugador
+        spanVidasEnemigo.innerHTML = vidasEnemigo
         crearMensaje(resultado)
     }
+
+    revisarVidas()
+}
+
+function revisarVidas() {
+    //let resultado = 'GANAMOS'
+    if (vidasEnemigo == 0) {
+        crearMensajeFinal('Felicitaciones. Has ganado tu partida!!!')
+    } else if (vidasJugador == 0) {
+        //resultado = 'PERDIMOS'
+        crearMensajeFinal('Has sido derrotado. Pero no te preocupes. Puedes volver a intentarlo nuevamente.')
     }
+
+    if (vidasEnemigo == 0 || vidasJugador == 0) {
+        let sectionReiniciar = document.getElementById('Reiniciar')
+        sectionReiniciar.style.display = 'block'
+    }
+}
+
+function reiniciarJuego() {
+    location.reload()
+}
 
 
 window.addEventListener('load', iniciarJuego) // Metodo de window para que el codigo JS se corra luego de que se cargué el HTML completo
