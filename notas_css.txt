@@ -1,0 +1,37 @@
+CSS: 
+
+Tipo = El nombre de la etiqueta HTML tal cual (h1, p , section , body, etc)
+Clase = El nombre que le dimos a la clase en HTML simplemente le agregamos (.) punto al principio.
+ID = El nombre que le dimos al id en HTML simplemente le agregamos (#) hashtag al principio.
+Cada una se debe usar en casos especificos pero creo que eso lo veremos mas adelante.
+
+Aportes adicionales sobre el display o “visualización” en CSS:
+
+El display block ocupa el 100% del ancho, por eso se pone uno debajo del otro.
+El display inline como lo dice su nombre se ponen en linea. Uno al lado del otro.
+El display inline-block lo usamos cuando queremos que un elemento(s) se vuelva inline
+¿Y si quiero convertir un elemento inline en block? Solo basta con colocarle la propiedad display: block.
+
+Documentación: https://www.youtube.com/watch?v=rJp3IWsk_os
+
+Con las herramientas del inspector podemos agregar cosas como justify-content y demás para ir viendo cómo queda el resultado. En este caso el justify-content no se logra percibir debido a que no hay suficiente espacio para ejecutarlo
+
+Para ello podemos usar todo el tamaño de lo que estamos viendo en pantalla, usando 100vh como medida en height
+
+vh = view height
+
+Lo último que podemos hacer es centrar en el medio de la pantalla el contenido, con:
+
+align-items: center;
+De esta manera, todo lo del contenido de seleccionar mascota queda centrado
+
+#seleccionar-mascota{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+Hay atributos que solo se le pueden modificar a los padres y otros solo a los hijos
+
+En el desarrollo web, el modelo de caja CSS se refiere a cómo se modelan los elementos HTML en los motores de los navegadores y cómo las dimensiones de esos elementos HTML se derivan de las propiedades CSS.

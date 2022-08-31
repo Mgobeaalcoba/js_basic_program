@@ -1,0 +1,70 @@
+h1 {
+    color:lightcoral;
+    font-family: monospace;
+    font-size: 58px;
+    width: 500px;
+    height: 80px;
+    background-color: blueviolet;
+}
+/* Selector de Tipo */
+/* Tiene Display : Block por defecto el h1 y h2*/
+/* de esta forma le doy estilo a una sección en particular de mi maquetado */
+
+.section {
+    color:navy;
+}
+/* Selector de clase */
+/* De esta otra le doy estilo a una clase de secciones definida por mí */
+
+#seleccionar-ataque {
+    color: crimson;
+}
+/* selector de id */
+
+label {
+    cursor: default;
+    background-color: tomato;
+    width: 500px;
+    height: 80px;
+    /* Al tener display : inline por defecto no va a tomar atributos de ancho y largo */
+}
+
+button {
+    appearance: auto;
+    writing-mode: horizontal-tb !important;
+    text-rendering: auto;
+    color: buttontext;
+    letter-spacing: normal;
+    word-spacing: normal;
+    line-height: normal;
+    text-transform: none;
+    text-indent: 0px;
+    text-shadow: none;
+    display: inline-block;
+    text-align: center;
+    align-items: flex-start;
+    cursor: default;
+    box-sizing: border-box;
+    background-color: violet;
+    margin: 0em;
+    padding: 1px 6px;
+    border-width: 2px;
+    border-style: outset;
+    border-color: buttonborder;
+    border-image: initial;
+    width: 500px;
+    height: 80px;
+}
+
+input[type="radio" i] {
+    background-color: initial;
+    cursor: default;
+    appearance: auto;
+    box-sizing: border-box;
+    margin: 3px 3px 0px 5px;
+    padding: initial;
+    border: initial;
+    width: 500px;
+    height: 80px;
+}
+/* los inputs si toman ancho y largo porque son de tipo inline-block */
