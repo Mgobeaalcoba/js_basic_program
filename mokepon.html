@@ -16,22 +16,41 @@
             <h2>Elegi tu mascota:</h2>
 
             <div class="tarjetas">
-                <label class="tarjeta-de-mokepon" for="Hipodoge">Hipodoge</label>
+                <label class="tarjeta-de-mokepon" for="Hipodoge">
+                    <p>Hipodoge</p>
+                    <img src="./assets/Fuecoco.png" alt="Hipodoge">
+                </label>
                 <input type="radio" name="mascota" id="Hipodoge"/>
 
-                <label class="tarjeta-de-mokepon" for="Capipeyo">Capipeyo</label>
+                <label class="tarjeta-de-mokepon" for="Capipeyo">
+                    <p>Capipeyo</p>
+                    <img src="./assets/Gible-Pokemon-PNG-HD-Quality.png" alt="Capipeyo">
+                            <!-- lo que va en alt es una alternativa por si no carga la imagen -->
+                </label>
                 <input type="radio" name="mascota" id="Capipeyo"/>
 
-                <label class="tarjeta-de-mokepon" for="Ratigueya">Ratigueya</label>
+                <label class="tarjeta-de-mokepon" for="Ratigueya">
+                    <p>Ratigueya</p>
+                    <img src="./assets/Wurmple.png" alt="Ratigueya">
+                </label>
                 <input type="radio" name="mascota" id="Ratigueya"/>
 
-                <label class="tarjeta-de-mokepon" for="Langostelvis">Langostelvis</label>
+                <label class="tarjeta-de-mokepon" for="Langostelvis">
+                    <p>Langostelvis</p>
+                    <img src="./assets/Cascoon_HOME.png" alt="Langostelvis"> 
+                </label>
                 <input type="radio" name="mascota" id="Langostelvis"/>
 
-                <label class="tarjeta-de-mokepon" for="Tucapalma">Tucapalma</label>
+                <label class="tarjeta-de-mokepon" for="Tucapalma">
+                    <p>Tucapalma</p>
+                    <img src="./assets/Quaxly.png" alt="Tucapalma">
+                </label>
                 <input type="radio" name="mascota" id="Tucapalma"/>
 
-                <label class="tarjeta-de-mokepon" for="Pydos">Pydos</label>
+                <label class="tarjeta-de-mokepon" for="Pydos">
+                    <p>Pydos</p>
+                    <img src="./assets/Sprigatito.png" alt="Pydos">
+                </label>
                 <input type="radio" name="mascota" id="Pydos"/>
             </div>
 
@@ -40,22 +59,30 @@
 
         <section id = "seleccionar-ataque">
             <h1 class="titulo">Mokepon 🔥💧🌿</h1>
+
             <h2>Elegi tu ataque:</h2>
 
-            <p>Tu mascota <span id="mascota-jugador"></span> tiene <span id="vidas-jugador">3 </span> vidas</p>
-            <p>La mascota <span id="mascota-enemigo"></span> del enemigo tiene <span id="vidas-enemigo">3 </span> vidas</p>
+            <div>
+                <button id="boton-fuego" class="boton-de-ataque">Fuego 🔥</button>
+                <button id="boton-agua" class="boton-de-ataque">Agua 💧</button>
+                <button id="boton-planta" class="boton-de-ataque">Planta 🌿</button>
+            </div>
+             <!-- Cambio el parrafo por una división para encapsular una "cajita principal" -->
 
-            <p>
-                <button id="boton-fuego">Fuego 🔥</button>
-                <button id="boton-agua">Agua 💧</button>
-                <button id="boton-planta">Planta 🌿</button>
-            </p>
-        </section>
-        <section id="Mensajes">
-        </section>
+            <div id="Mensajes">
+                <p id ="resultado">Mucha Suerte</p>
+                <section ID="Reiniciar">
+                    <button id="boton-reiniciar">Reiniciar</button>
+                </section>
+            </div> 
+        
 
-        <section ID="Reiniciar">
-            <button id="boton-reiniciar">Reiniciar</button>
+            <div>
+                <div id ="ataques-del-jugador"></div>
+                <div id ="ataques-del-enemigo"></div>
+                <p>Tu mascota <span id="mascota-jugador"></span> tiene <span id="vidas-jugador">3 </span> vidas</p>
+                <p>La mascota <span id="mascota-enemigo"></span> del enemigo tiene <span id="vidas-enemigo">3 </span> vidas</p>
+            </div>
         </section>
     </body>
 </html>

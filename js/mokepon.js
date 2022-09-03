@@ -28,7 +28,7 @@ function iniciarJuego() {
 
 function seleccionarMascotaJugador() {
     let sectionSeleccionarAtaque = document.getElementById('seleccionar-ataque')
-    sectionSeleccionarAtaque.style.display = 'block'
+    sectionSeleccionarAtaque.style.display = 'flex'
 
     let sectionSeleccionarMascota = document.getElementById('seleccionar-mascota')
     sectionSeleccionarMascota.style.display = 'none'
@@ -128,22 +128,35 @@ function seleccionarAtaqueEnemigo() {
 }
 
 function crearMensaje(final) {
-    let sectionMensajes = document.getElementById('Mensajes') // Creo variable con la sección donde quiero insertar mis parrafos
+    let sectionMensajes = document.getElementById('resultado') // Creo variable con la sección donde quiero insertar mis parrafos
+    let ataquesDelJugador = document.getElementById('ataques-del-jugador')
+    let ataquesDelEnemigo = document.getElementById('ataques-del-enemigo')
 
-    let parrafo = document.createElement('p') // inserto un nuevo parrafo en mi HTML con el metodo createElement
+    //let notificacion = document.createElement('p')
+    let nuevoAtaqueDelJugador = document.createElement('p')
+    let nuevoAtaqueDelEnemigo = document.createElement('p')
 
-    parrafo.innerHTML = 'Tu mascota atacó con ' + ataqueJugador + ' , la mascota del enemigo atacó con ' + ataqueEnemigo + '. Resultado: ' + final // Creo los parrafos que quiero insertar
+    sectionMensajes.innerHTML = resultado
+    nuevoAtaqueDelJugador.innerHTML = ataqueJugador
+    nuevoAtaqueDelEnemigo.innerHTML = ataqueEnemigo
 
-    sectionMensajes.appendChild(parrafo) // Inserto en la sección escogida primero el parrafo armado despues. 
+    //sectionMensajes.appendChild(notificacion)
+    ataquesDelJugador.appendChild(nuevoAtaqueDelJugador)
+    ataquesDelEnemigo.appendChild(nuevoAtaqueDelEnemigo)
+
+    //let parrafo = document.createElement('p') // inserto un nuevo parrafo en mi HTML con el metodo createElement
+    //parrafo.innerHTML = 'Tu mascota atacó con ' + ataqueJugador + ' , la mascota del enemigo atacó con ' + ataqueEnemigo + '. Resultado: ' + final // Creo los parrafos que quiero insertar
+
+    //sectionMensajes.appendChild(parrafo) // Inserto en la sección escogida primero el parrafo armado despues. 
 }
 
 function crearMensajeFinal(resultadoFinal) {
-    let sectionMensajes = document.getElementById('Mensajes')
+    let sectionMensajes = document.getElementById('resultado')
 
-    let parrafo = document.createElement('p')
-    parrafo.innerHTML = resultadoFinal
+    //let parrafo = document.createElement('p')
+    sectionMensajes.innerHTML = resultadoFinal
 
-    sectionMensajes.appendChild(parrafo)
+    //sectionMensajes.appendChild(parrafo)
 
     let botonFuego = document.getElementById('boton-fuego')
     botonFuego.disabled = true
@@ -194,6 +207,8 @@ function revisarVidas() {
     if (vidasEnemigo == 0 || vidasJugador == 0) {
         let sectionReiniciar = document.getElementById('Reiniciar')
         sectionReiniciar.style.display = 'block'
+        //let sectionMensajes = document.getElementById('Mensajes')
+        //sectionMensajes.style.display = 'flex'
     }
 }
 
