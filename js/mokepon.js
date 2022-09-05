@@ -32,11 +32,33 @@ const ataquesDelEnemigo = document.getElementById('ataques-del-enemigo')
 //let botonAgua = document.getElementById('boton-agua')
 //let botonPlanta = document.getElementById('boton-planta')
 
+let mokepones = [] // Armo un array vacio para guardar luego los mokepones
 let ataqueJugador
 let ataqueEnemigo 
 let resultado
 let vidasJugador = 3
 let vidasEnemigo = 3
+
+class Mokepon {
+    constructor(nombre, foto, vida) {
+        this.nombre = nombre
+        this.foto = foto
+        this.vida = vida
+    }
+}
+
+let Hipodoge = new Mokepon('Hipodoge', './assets/Fuecoco.png', 5)
+let Capipeyo = new Mokepon('Capipeyo','./assets/Gible-Pokemon-PNG-HD-Quality.png', 5)
+let Ratigueya = new Mokepon('Ratigueya', './assets/Wurmple.png', 5)
+let Langostelvis = new Mokepon('Langostelvis', './assets/Cascoon_HOME.png', 5)
+let Tucapalma = new Mokepon ('Tucapalma','./assets/Quaxly.png', 5)
+let Pydos = new Mokepon('Pydos', './assets/Sprigatito.png', 5)
+
+//console.log(Tucapalma)
+
+mokepones.push(Hipodoge,Capipeyo,Ratigueya,Langostelvis,Tucapalma,Pydos) //metodo para "empujar" mis mokepones al array
+
+console.log(mokepones)
 
 function iniciarJuego() {
     sectionSeleccionarAtaque.style.display = 'none'
