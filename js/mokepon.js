@@ -8,12 +8,12 @@ const botonReiniciar = document.getElementById('boton-reiniciar')
 
 //let sectionSeleccionarAtaque = document.getElementById('seleccionar-ataque')
 const sectionSeleccionarMascota = document.getElementById('seleccionar-mascota')
-const inputHipodoge = document.getElementById('Hipodoge')
-const inputCapipeyo = document.getElementById('Capipeyo')
-const inputRatigueya = document.getElementById('Ratigueya')
-const inputLangostelvis = document.getElementById('Langostelvis')
-const inputTucapalma = document.getElementById('Tucapalma')
-const inputPydos = document.getElementById('Pydos')
+//const inputHipodoge = document.getElementById('Hipodoge')
+//const inputCapipeyo = document.getElementById('Capipeyo')
+//const inputRatigueya = document.getElementById('Ratigueya')
+//const inputLangostelvis = document.getElementById('Langostelvis')
+//const inputTucapalma = document.getElementById('Tucapalma')
+//const inputPydos = document.getElementById('Pydos')
 const spanMascotaJugador = document.getElementById('mascota-jugador') // Manipulando el DOM
 
 const spanMascotaEnemigo = document.getElementById('mascota-enemigo')
@@ -24,6 +24,7 @@ const spanVidasEnemigo = document.getElementById("vidas-enemigo")
 const sectionMensajes = document.getElementById('resultado') // Creo variable con la sección donde quiero insertar mis parrafos
 const ataquesDelJugador = document.getElementById('ataques-del-jugador')
 const ataquesDelEnemigo = document.getElementById('ataques-del-enemigo')
+const contenedorTarjetas = document.getElementById('contenedorTarjetas')
 
 //let sectionReiniciar = document.getElementById('Reiniciar')
 
@@ -35,6 +36,13 @@ const ataquesDelEnemigo = document.getElementById('ataques-del-enemigo')
 let mokepones = [] // Armo un array vacio para guardar luego los mokepones
 let ataqueJugador
 let ataqueEnemigo 
+let opcionDeMokepones
+let inputHipodoge 
+let inputCapipeyo 
+let inputRatigueya 
+let inputLangostelvis 
+let inputTucapalma 
+let inputPydos 
 let resultado
 let vidasJugador = 3
 let vidasEnemigo = 3
@@ -44,6 +52,7 @@ class Mokepon {
         this.nombre = nombre
         this.foto = foto
         this.vida = vida
+        this.ataques = []
     }
 }
 
@@ -56,12 +65,88 @@ let Pydos = new Mokepon('Pydos', './assets/Sprigatito.png', 5)
 
 //console.log(Tucapalma)
 
+//console.log(mokepones)
+Hipodoge.ataques.push(
+    { nombre: '💧', id: 'boton-agua' },
+    { nombre: '💧', id: 'boton-agua' },
+    { nombre: '💧', id: 'boton-agua' },
+    { nombre: '🔥', id: 'boton-fuego' },
+    { nombre: '🌿', id: 'boton-planta'}
+)
+
+Capipeyo.ataques.push(
+    { nombre: '🌿', id: 'boton-planta' },
+    { nombre: '🌿', id: 'boton-planta' },
+    { nombre: '🌿', id: 'boton-planta'},
+    { nombre: '💧', id: 'boton-agua' },
+    { nombre: '🔥', id: 'boton-fuego' }
+)
+
+Ratigueya.ataques.push(
+    { nombre: '🔥', id: 'boton-fuego' },
+    { nombre: '🔥', id: 'boton-fuego' },
+    { nombre: '🔥', id: 'boton-fuego' },
+    { nombre: '💧', id: 'boton-agua' },
+    { nombre: '🌿', id: 'boton-planta'}
+)
+
+Langostelvis.ataques.push(
+    { nombre: '🔥', id: 'boton-fuego' },
+    { nombre: '🔥', id: 'boton-fuego' },
+    { nombre: '💧', id: 'boton-agua' },
+    { nombre: '💧', id: 'boton-agua' },
+    { nombre: '🌿', id: 'boton-planta'}
+)
+
+
+Tucapalma.ataques.push(
+    { nombre: '🔥', id: 'boton-fuego' },
+    { nombre: '🔥', id: 'boton-fuego' },
+    { nombre: '🌿', id: 'boton-planta' },
+    { nombre: '🌿', id: 'boton-planta'},
+    { nombre: '💧', id: 'boton-agua' }
+)
+
+
+Pydos.ataques.push(
+    { nombre: '💧', id: 'boton-agua' },
+    { nombre: '💧', id: 'boton-agua' },
+    { nombre: '🔥', id: 'boton-fuego' },
+    { nombre: '🌿', id: 'boton-planta' },
+    { nombre: '🌿', id: 'boton-planta'}
+)
+
 mokepones.push(Hipodoge,Capipeyo,Ratigueya,Langostelvis,Tucapalma,Pydos) //metodo para "empujar" mis mokepones al array
 
-console.log(mokepones)
+//console.log(Hipodoge.ataques)
 
 function iniciarJuego() {
     sectionSeleccionarAtaque.style.display = 'none'
+
+    mokepones.forEach((mokepon) => {
+        //console.log(mokepon.nombre)
+        opcionDeMokepones = `
+        <input type="radio" name="mascota" id=${mokepon.nombre} /> 
+        <label class="tarjeta-de-mokepon" for=${mokepon.nombre}>
+            <p>Hipodoge</p>
+            <img src=${mokepon.foto} alt=${mokepon.nombre}>
+        </label>
+        `
+
+        // Para evitar el error Uncaught TypeError: Cannot read properties of null (reading ‘checked’) at HTMLButtonElement.seleccionarMascotaJugador
+        // En la parte del id del input tipo radio, se debe dejar un espacio entre el corchete “}” y la barra de cierre “/” <input type=“radio” name=“mascota” id=${Mokepon.nombre} />
+
+        contenedorTarjetas.innerHTML += opcionDeMokepones // con el mas adelante del igual me aseguro que en el HTML se inserten todos los mokepones que tengo. 
+
+        inputHipodoge = document.getElementById('Hipodoge')
+        inputCapipeyo = document.getElementById('Capipeyo')
+        inputRatigueya = document.getElementById('Ratigueya')
+        inputLangostelvis = document.getElementById('Langostelvis')
+        inputTucapalma = document.getElementById('Tucapalma')
+        inputPydos = document.getElementById('Pydos')
+
+        })
+
     sectionReiniciar.style.display = 'none'
     botonMascotaJugador.addEventListener('click', seleccionarMascotaJugador)
     botonFuego.addEventListener('click', ataqueFuego)
