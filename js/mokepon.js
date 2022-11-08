@@ -1,9 +1,6 @@
 const sectionSeleccionarAtaque = document.getElementById('seleccionar-ataque')
 const sectionReiniciar = document.getElementById('Reiniciar')
 const botonMascotaJugador = document.getElementById('boton-mascota')
-const botonFuego = document.getElementById('boton-fuego')
-const botonAgua = document.getElementById('boton-agua') 
-const botonPlanta = document.getElementById('boton-planta')
 const botonReiniciar = document.getElementById('boton-reiniciar')
 
 //let sectionSeleccionarAtaque = document.getElementById('seleccionar-ataque')
@@ -25,6 +22,7 @@ const sectionMensajes = document.getElementById('resultado') // Creo variable co
 const ataquesDelJugador = document.getElementById('ataques-del-jugador')
 const ataquesDelEnemigo = document.getElementById('ataques-del-enemigo')
 const contenedorTarjetas = document.getElementById('contenedorTarjetas')
+const contenedorAtaques = document.getElementById('contenedorAtaques')
 
 //let sectionReiniciar = document.getElementById('Reiniciar')
 
@@ -44,6 +42,13 @@ let inputLangostelvis
 let inputTucapalma 
 let inputPydos 
 let resultado
+let mascotaJugador
+let ataquesMokepon
+let botonFuego
+let botonAgua
+let botonPlanta
+let botones = []
+let ataquesJugadores = []
 let vidasJugador = 3
 let vidasEnemigo = 3
 
@@ -149,9 +154,7 @@ function iniciarJuego() {
 
     sectionReiniciar.style.display = 'none'
     botonMascotaJugador.addEventListener('click', seleccionarMascotaJugador)
-    botonFuego.addEventListener('click', ataqueFuego)
-    botonAgua.addEventListener('click', ataqueAgua)
-    botonPlanta.addEventListener('click', ataquePlanta)
+
     botonReiniciar.addEventListener('click', reiniciarJuego)
 }
 
@@ -160,65 +163,93 @@ function seleccionarMascotaJugador() {
     sectionSeleccionarMascota.style.display = 'none'    
     if (inputHipodoge.checked) {
         //alert('Seleccionaste a Hipodoge')
-        spanMascotaJugador.innerHTML = 'Hipodoge' // Manipulando el DOM
+        spanMascotaJugador.innerHTML =  inputHipodoge.id// Manipulando el DOM
+        mascotaJugador = inputHipodoge.id
     } else if (inputCapipeyo.checked) {
         //alert('Seleccionaste a Capipeyo')
-        spanMascotaJugador.innerHTML = 'Capipeyo'
+        spanMascotaJugador.innerHTML = inputCapipeyo.id
+        mascotaJugador = inputCapipeyo.id
     } else if (inputRatigueya.checked) {
         //alert('Seleccionaste a Ratigueya')
-        spanMascotaJugador.innerHTML = 'Ratigueya'
+        spanMascotaJugador.innerHTML = inputRatigueya.id
+        mascotaJugador = inputRatigueya.id
     } else if (inputLangostelvis.checked) {
         //alert('Seleccionaste a Langostelvis')
-        spanMascotaJugador.innerHTML = 'Langostelvis'
+        spanMascotaJugador.innerHTML = inputLangostelvis.id
+        mascotaJugador = inputLangostelvis.id
     } else if (inputTucapalma.checked) {
         //alert('Seleccionaste a Tucapalma')
-        spanMascotaJugador.innerHTML = 'Tucapalma'
+        spanMascotaJugador.innerHTML = inputTucapalma.id
+        mascotaJugador = inputTucapalma.id
     } else if (inputPydos.checked) {
         //alert('Seleccionaste a Pydos')
-        spanMascotaJugador.innerHTML = 'Pydos'
+        spanMascotaJugador.innerHTML = inputPydos.id
+        mascotaJugador = inputPydos.id
     } else {
         alert('No has seleccionado ninguna mascota... Hazlo')
     }
+
+    extraerAtaques(mascotaJugador)
     seleccionarMascotaEnemigo()
 }
 
-function seleccionarMascotaEnemigo() {
-    let mascotaAleatoria = aleatorio(1,6)
-    if (mascotaAleatoria == 1) {
-        spanMascotaEnemigo.innerHTML = 'Hipodoge'
-    } else if (mascotaAleatoria == 2) {
-        spanMascotaEnemigo.innerHTML = 'Capipeyo'
-    } else if (mascotaAleatoria == 3) {
-        spanMascotaEnemigo.innerHTML = 'Ratigueya'
-    } else if (mascotaAleatoria == 4) {
-        spanMascotaEnemigo.innerHTML = 'Langostelvis'
-    } else if (mascotaAleatoria == 5) {
-        spanMascotaEnemigo.innerHTML = 'Tucapalma'
-    } else {
-        spanMascotaEnemigo.innerHTML ='Pydos'
+function extraerAtaques(mascotaJugador) {
+    let ataques 
+    for (let i = 0; i < mokepones.length; i++) {
+        if (mascotaJugador === mokepones[i].nombre) {
+            ataques = mokepones[i].ataques
+        }
+
     }
-    //ataqueEnemigo = seleccionarAtaqueEnemigo()
+    //console.log(ataques)
+    mostrarAtaques(ataques)
 }
 
-function ataqueFuego() {
-    ataqueJugador = 'FUEGO'
-    //alert("El jugador ataca con: " + ataqueJugador)
-    //ataqueEnemigo = seleccionarAtaqueEnemigo()
-    seleccionarAtaqueEnemigo()
+function mostrarAtaques(ataques) {
+    ataques.forEach((ataque) => {
+        ataquesMokepon = `
+        <button id=${ataque.id} class="boton-de-ataque BAtaque">${ataque.nombre} </button>
+        `
+        contenedorAtaques.innerHTML += ataquesMokepon
+    })
+
+    botonFuego = document.getElementById('boton-fuego')
+    botonAgua = document.getElementById('boton-agua') 
+    botonPlanta = document.getElementById('boton-planta')
+
+    botones  = document.querySelectorAll('.BAtaque')
+
+    //console.log(botones)
+
 }
 
-function ataqueAgua() {
-    ataqueJugador = 'AGUA'
-    //alert("El jugador ataca con: " + ataqueJugador)
-    //ataqueEnemigo = seleccionarAtaqueEnemigo()
-    seleccionarAtaqueEnemigo()
+function secuenciaAtaque() {
+    botones.forEach((boton) => {
+        boton.addEventListener('click', (e) => {
+            if (e.target.textContent === '🔥 ') {
+                ataquesJugadores.push('FUEGO')
+                console.log(ataquesJugadores)
+                boton.style.background = '#112f58'
+            } else if (e.target.textContent === '💧 ') {
+                ataquesJugadores.push('AGUA')
+                console.log(ataquesJugadores)
+                boton.style.background = '#112f58'
+            } else {
+                ataquesJugadores.push('PLANTA')
+                console.log(ataquesJugadores)
+                boton.style.background = '#112f58' 
+            }
+            //console.log(e)
+        })
+    })
 }
 
-function ataquePlanta() {
-    ataqueJugador = 'PLANTA'
-    //alert("El jugador ataca con: " + ataqueJugador)
+function seleccionarMascotaEnemigo() {
+    let mascotaAleatoria = aleatorio(0, mokepones.length -1)
+    
+    spanMascotaEnemigo.innerHTML = mokepones[mascotaAleatoria].nombre
     //ataqueEnemigo = seleccionarAtaqueEnemigo()
-    seleccionarAtaqueEnemigo()
+    secuenciaAtaque()
 }
 
 function seleccionarAtaqueEnemigo() {
