@@ -137,6 +137,16 @@ input:checked + label {
 
 /* medias querys para diseño responsivo o Responsive Design */
 
+#ver-mapa {
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+#mapa {
+    border: 2px solid white;
+}
+
 @media (max-width: 480px) {
     .tarjetas, .tarjetas-ataques {
       flex-direction: column;

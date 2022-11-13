@@ -12,6 +12,8 @@ const ataquesDelJugador = document.getElementById('ataques-del-jugador')
 const ataquesDelEnemigo = document.getElementById('ataques-del-enemigo')
 const contenedorTarjetas = document.getElementById('contenedorTarjetas')
 const contenedorAtaques = document.getElementById('contenedorAtaques')
+const sectionVerMapa = document.getElementById('ver-mapa')
+const mapa = document.getElementById('mapa')
 
 let mokepones = [] // Armo un array vacio para guardar luego los mokepones
 let ataqueJugador
@@ -39,6 +41,7 @@ let victoriasJugador = 0
 let victoriasEnemigo = 0
 let vidasJugador = 3
 let vidasEnemigo = 3
+let lienzo = mapa.getContext("2d")
 
 class Mokepon {
     constructor(nombre, foto, vida) {
@@ -46,6 +49,12 @@ class Mokepon {
         this.foto = foto
         this.vida = vida
         this.ataques = []
+        this.x = 20
+        this.y = 30
+        this.ancho = 80
+        this.alto = 80
+        this.mapaFoto = new Image()
+        this.mapaFoto.src = foto
     }
 }
 
@@ -111,12 +120,13 @@ mokepones.push(Hipodoge,Capipeyo,Ratigueya,Langostelvis,Tucapalma,Pydos) //metod
 
 function iniciarJuego() {
     sectionSeleccionarAtaque.style.display = 'none'
+    sectionVerMapa.style.display = 'none'
 
     mokepones.forEach((mokepon) => {
         opcionDeMokepones = `
         <input type="radio" name="mascota" id=${mokepon.nombre} /> 
         <label class="tarjeta-de-mokepon" for=${mokepon.nombre}>
-            <p>Hipodoge</p>
+            <p>${mokepon.nombre}</p>
             <img src=${mokepon.foto} alt=${mokepon.nombre}>
         </label>
         `
@@ -142,8 +152,13 @@ function iniciarJuego() {
 }
 
 function seleccionarMascotaJugador() {
-    sectionSeleccionarAtaque.style.display = 'flex'
+    //sectionSeleccionarAtaque.style.display = 'flex'
     sectionSeleccionarMascota.style.display = 'none'    
+
+    sectionVerMapa.style.display = 'flex'
+
+    pintarPersonaje();
+
     if (inputHipodoge.checked) {
         spanMascotaJugador.innerHTML =  inputHipodoge.id// Manipulando el DOM
         mascotaJugador = inputHipodoge.id
@@ -313,6 +328,22 @@ function aleatorio(min, max) {
 
 function reiniciarJuego() {
     location.reload()
+}
+
+function pintarPersonaje() {
+    lienzo.clearRect(0, 0, mapa.width, mapa.height)
+    lienzo.drawImage(
+        Capipeyo.mapaFoto,
+        Capipeyo.x,
+        Capipeyo.y,
+        Capipeyo.ancho,
+        Capipeyo.alto
+    )
+}
+
+function moverCapipepo() {
+    Capipeyo.x = Capipeyo.x + 5
+    pintarPersonaje()
 }
 
 window.addEventListener('load', iniciarJuego) // Metodo de window para que el codigo JS se corra luego de que se cargué el HTML completo
