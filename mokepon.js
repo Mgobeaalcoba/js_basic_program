@@ -27,6 +27,7 @@ let inputTucapalma
 let inputPydos 
 let resultado
 let mascotaJugador
+let mascotaJugadorObjeto
 let ataquesMokepon
 let ataquesMokeponEnemigo
 let botonFuego
@@ -42,28 +43,47 @@ let victoriasEnemigo = 0
 let vidasJugador = 3
 let vidasEnemigo = 3
 let lienzo = mapa.getContext("2d")
+let intervalo
+let mapaBackground = new Image()
+mapaBackground.src = './assets/mokemap.png' // importante para que salga bien que el archivo JS esté a la misma altura que la carpeta assets
 
 class Mokepon {
-    constructor(nombre, foto, vida) {
+    constructor(nombre, foto, vida, fotoMapa, x = 10, y = 10) { // Cuando defino valores en el constructor son posibles valores por defecto.
         this.nombre = nombre
         this.foto = foto
         this.vida = vida
         this.ataques = []
-        this.x = 20
-        this.y = 30
-        this.ancho = 80
-        this.alto = 80
+        this.x = x
+        this.y = y
+        this.ancho = 40
+        this.alto = 40
         this.mapaFoto = new Image()
-        this.mapaFoto.src = foto
+        this.mapaFoto.src = fotoMapa
+        this.velocidadX = 0
+        this.velocidadY = 0
+    }
+
+    pintarMokepon() {
+        lienzo.drawImage(
+            this.mapaFoto,
+            this.x,
+            this.y,
+            this.ancho,
+            this.alto
+        )
     }
 }
 
-let Hipodoge = new Mokepon('Hipodoge', './assets/Fuecoco.png', 5)
-let Capipeyo = new Mokepon('Capipeyo','./assets/Gible-Pokemon-PNG-HD-Quality.png', 5)
-let Ratigueya = new Mokepon('Ratigueya', './assets/Wurmple.png', 5)
-let Langostelvis = new Mokepon('Langostelvis', './assets/Cascoon_HOME.png', 5)
-let Tucapalma = new Mokepon ('Tucapalma','./assets/Quaxly.png', 5)
-let Pydos = new Mokepon('Pydos', './assets/Sprigatito.png', 5)
+let Hipodoge = new Mokepon('Hipodoge', './assets/Fuecoco.png', 5, './assets/Fuecoco.png')
+let Capipeyo = new Mokepon('Capipeyo','./assets/Gible-Pokemon-PNG-HD-Quality.png', 5, './assets/Gible-Pokemon-PNG-HD-Quality.png')
+let Ratigueya = new Mokepon('Ratigueya', './assets/Wurmple.png', 5, './assets/Wurmple.png')
+let Langostelvis = new Mokepon('Langostelvis', './assets/Cascoon_HOME.png', 5, './assets/Cascoon_HOME.png')
+let Tucapalma = new Mokepon ('Tucapalma','./assets/Quaxly.png', 5, './assets/Quaxly.png')
+let Pydos = new Mokepon('Pydos', './assets/Sprigatito.png', 5, './assets/Sprigatito.png')
+
+let HipodogeEnemigo = new Mokepon('Hipodoge', './assets/Fuecoco.png', 5, './assets/Fuecoco.png', 80, 120)
+let CapipeyoEnemigo = new Mokepon('Capipeyo','./assets/Gible-Pokemon-PNG-HD-Quality.png', 5, './assets/Gible-Pokemon-PNG-HD-Quality.png', 150, 95)
+let RatigueyaEnemigo = new Mokepon('Ratigueya', './assets/Wurmple.png', 5, './assets/Wurmple.png', 200, 190)
 
 
 Hipodoge.ataques.push(
@@ -155,9 +175,6 @@ function seleccionarMascotaJugador() {
     //sectionSeleccionarAtaque.style.display = 'flex'
     sectionSeleccionarMascota.style.display = 'none'    
 
-    sectionVerMapa.style.display = 'flex'
-
-    pintarPersonaje();
 
     if (inputHipodoge.checked) {
         spanMascotaJugador.innerHTML =  inputHipodoge.id// Manipulando el DOM
@@ -182,6 +199,13 @@ function seleccionarMascotaJugador() {
     }
 
     extraerAtaques(mascotaJugador)
+
+    sectionVerMapa.style.display = 'flex'
+
+    iniciarMapa()
+
+    pintarCanvas();
+
     seleccionarMascotaEnemigo()
 }
 
@@ -330,20 +354,81 @@ function reiniciarJuego() {
     location.reload()
 }
 
-function pintarPersonaje() {
+function pintarCanvas() {
+    mascotaJugadorObjeto.x = mascotaJugadorObjeto.x + mascotaJugadorObjeto.velocidadX
+    mascotaJugadorObjeto.y = mascotaJugadorObjeto.y + mascotaJugadorObjeto.velocidadY
     lienzo.clearRect(0, 0, mapa.width, mapa.height)
-    lienzo.drawImage(
-        Capipeyo.mapaFoto,
-        Capipeyo.x,
-        Capipeyo.y,
-        Capipeyo.ancho,
-        Capipeyo.alto
-    )
+    lienzo.drawImage(mapaBackground,0,0, mapa.width, mapa.height)
+    mascotaJugadorObjeto.pintarMokepon()
+    HipodogeEnemigo.pintarMokepon()
+    CapipeyoEnemigo.pintarMokepon()
+    RatigueyaEnemigo.pintarMokepon()
+
 }
 
-function moverCapipepo() {
-    Capipeyo.x = Capipeyo.x + 5
-    pintarPersonaje()
+function moverDerecha() {
+    
+    mascotaJugadorObjeto.velocidadX = 5
+}
+
+function moverIzquierda() {
+    
+    mascotaJugadorObjeto.velocidadX = -5
+}
+
+function moverArriba() {
+    
+    mascotaJugadorObjeto.velocidadY = -5
+}
+
+function moverAbajo() {
+    
+    mascotaJugadorObjeto.velocidadY = 5
+}
+
+function detenerMovimiento() {
+    
+    mascotaJugadorObjeto.velocidadX = 0
+    mascotaJugadorObjeto.velocidadY = 0
+}
+
+function sePresionoUnaTecla(event) {
+    switch (event.key) {
+        case 'ArrowUp':
+            moverArriba()
+            break
+        case 'ArrowDown':
+            moverAbajo()
+            break
+        case 'ArrowLeft':
+            moverIzquierda()
+            break
+        case 'ArrowRight':
+            moverDerecha()
+            break
+        default:
+            break
+    }
+}
+
+function iniciarMapa() {
+    mapa.width = 320
+    mapa.height = 240
+    mascotaJugadorObjeto = obtenerObjetoMascota()
+    intervalo = setInterval(pintarCanvas, 50) // Funcion que debe ejecutar como primer parametro mas cada cuantos milisegundos
+
+    window.addEventListener('keydown', sePresionoUnaTecla)
+
+    window.addEventListener('keyup', detenerMovimiento)
+}
+
+function obtenerObjetoMascota() {
+    for (let i = 0; i < mokepones.length; i++) {
+        if (mascotaJugador === mokepones[i].nombre) {
+            return mokepones[i]
+        }
+
+    }
 }
 
 window.addEventListener('load', iniciarJuego) // Metodo de window para que el codigo JS se corra luego de que se cargué el HTML completo
