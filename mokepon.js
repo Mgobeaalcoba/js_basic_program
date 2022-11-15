@@ -14,6 +14,7 @@ const contenedorTarjetas = document.getElementById('contenedorTarjetas')
 const contenedorAtaques = document.getElementById('contenedorAtaques')
 const sectionVerMapa = document.getElementById('ver-mapa')
 const mapa = document.getElementById('mapa')
+const anchoMaximoDelMapa = 600
 
 let mokepones = [] // Armo un array vacio para guardar luego los mokepones
 let ataqueJugador
@@ -46,17 +47,28 @@ let lienzo = mapa.getContext("2d")
 let intervalo
 let mapaBackground = new Image()
 mapaBackground.src = './assets/mokemap.png' // importante para que salga bien que el archivo JS esté a la misma altura que la carpeta assets
+let alturaQueBuscamos
+let anchoDelMapa = window.innerWidth -20 // Función que busca y determina el ancho de la pantalla en la que se ejecuta el programa.
+
+if (anchoDelMapa > anchoMaximoDelMapa) {
+    anchoDelMapa = anchoMaximoDelMapa -20
+}
+
+alturaQueBuscamos = anchoDelMapa * 600 / 800
+
+mapa.width = anchoDelMapa
+mapa.height = alturaQueBuscamos
 
 class Mokepon {
-    constructor(nombre, foto, vida, fotoMapa, x = 10, y = 10) { // Cuando defino valores en el constructor son posibles valores por defecto.
+    constructor(nombre, foto, vida, fotoMapa) { // Cuando defino valores en el constructor son posibles valores por defecto.
         this.nombre = nombre
         this.foto = foto
         this.vida = vida
         this.ataques = []
-        this.x = x
-        this.y = y
         this.ancho = 40
         this.alto = 40
+        this.x = aleatorio(0, mapa.width - this.ancho)
+        this.y = aleatorio(0, mapa.height - this.alto)
         this.mapaFoto = new Image()
         this.mapaFoto.src = fotoMapa
         this.velocidadX = 0
@@ -81,9 +93,9 @@ let Langostelvis = new Mokepon('Langostelvis', './assets/Cascoon_HOME.png', 5, '
 let Tucapalma = new Mokepon ('Tucapalma','./assets/Quaxly.png', 5, './assets/Quaxly.png')
 let Pydos = new Mokepon('Pydos', './assets/Sprigatito.png', 5, './assets/Sprigatito.png')
 
-let HipodogeEnemigo = new Mokepon('Hipodoge', './assets/Fuecoco.png', 5, './assets/Fuecoco.png', 80, 120)
-let CapipeyoEnemigo = new Mokepon('Capipeyo','./assets/Gible-Pokemon-PNG-HD-Quality.png', 5, './assets/Gible-Pokemon-PNG-HD-Quality.png', 150, 95)
-let RatigueyaEnemigo = new Mokepon('Ratigueya', './assets/Wurmple.png', 5, './assets/Wurmple.png', 200, 190)
+let HipodogeEnemigo = new Mokepon('Hipodoge', './assets/Fuecoco.png', 5, './assets/Fuecoco.png')
+let CapipeyoEnemigo = new Mokepon('Capipeyo','./assets/Gible-Pokemon-PNG-HD-Quality.png', 5, './assets/Gible-Pokemon-PNG-HD-Quality.png')
+let RatigueyaEnemigo = new Mokepon('Ratigueya', './assets/Wurmple.png', 5, './assets/Wurmple.png')
 
 
 Hipodoge.ataques.push(
@@ -133,6 +145,30 @@ Pydos.ataques.push(
     { nombre: '💧', id: 'boton-agua' },
     { nombre: '🔥', id: 'boton-fuego' },
     { nombre: '🌿', id: 'boton-planta' },
+    { nombre: '🌿', id: 'boton-planta'}
+)
+
+HipodogeEnemigo.ataques.push(
+    { nombre: '💧', id: 'boton-agua' },
+    { nombre: '💧', id: 'boton-agua' },
+    { nombre: '💧', id: 'boton-agua' },
+    { nombre: '🔥', id: 'boton-fuego' },
+    { nombre: '🌿', id: 'boton-planta'}
+)
+
+CapipeyoEnemigo.ataques.push(
+    { nombre: '🌿', id: 'boton-planta' },
+    { nombre: '🌿', id: 'boton-planta' },
+    { nombre: '🌿', id: 'boton-planta'},
+    { nombre: '💧', id: 'boton-agua' },
+    { nombre: '🔥', id: 'boton-fuego' }
+)
+
+RatigueyaEnemigo.ataques.push(
+    { nombre: '🔥', id: 'boton-fuego' },
+    { nombre: '🔥', id: 'boton-fuego' },
+    { nombre: '🔥', id: 'boton-fuego' },
+    { nombre: '💧', id: 'boton-agua' },
     { nombre: '🌿', id: 'boton-planta'}
 )
 
@@ -206,7 +242,7 @@ function seleccionarMascotaJugador() {
 
     pintarCanvas();
 
-    seleccionarMascotaEnemigo()
+    //seleccionarMascotaEnemigo()
 }
 
 function extraerAtaques(mascotaJugador) {
@@ -258,11 +294,11 @@ function secuenciaAtaque() {
     })
 }
 
-function seleccionarMascotaEnemigo() {
-    let mascotaAleatoria = aleatorio(0, mokepones.length -1)
+function seleccionarMascotaEnemigo(enemigo) {
+    //let mascotaAleatoria = aleatorio(0, mokepones.length -1)
     
-    spanMascotaEnemigo.innerHTML = mokepones[mascotaAleatoria].nombre
-    ataquesMokeponEnemigo = mokepones[mascotaAleatoria].ataques
+    spanMascotaEnemigo.innerHTML = enemigo.nombre
+    ataquesMokeponEnemigo = enemigo.ataques
     secuenciaAtaque()
 }
 
@@ -363,6 +399,11 @@ function pintarCanvas() {
     HipodogeEnemigo.pintarMokepon()
     CapipeyoEnemigo.pintarMokepon()
     RatigueyaEnemigo.pintarMokepon()
+    if(mascotaJugadorObjeto.velocidadX !== 0 || mascotaJugadorObjeto.velocidadY !== 0) {
+        revisarColision(HipodogeEnemigo) 
+        revisarColision(CapipeyoEnemigo)
+        revisarColision(RatigueyaEnemigo)
+    }
 
 }
 
@@ -412,8 +453,7 @@ function sePresionoUnaTecla(event) {
 }
 
 function iniciarMapa() {
-    mapa.width = 320
-    mapa.height = 240
+
     mascotaJugadorObjeto = obtenerObjetoMascota()
     intervalo = setInterval(pintarCanvas, 50) // Funcion que debe ejecutar como primer parametro mas cada cuantos milisegundos
 
@@ -429,6 +469,31 @@ function obtenerObjetoMascota() {
         }
 
     }
+}
+
+function revisarColision(enemigo) {
+    const arribaEnemigo = enemigo.y
+    const abajoEnemigo = enemigo.y + enemigo.alto
+    const derechaEnemigo = enemigo.x + enemigo.ancho
+    const izquierdaEnemigo = enemigo.x
+
+    const arribaMascota = mascotaJugadorObjeto.y
+    const abajoMascota = mascotaJugadorObjeto.y + mascotaJugadorObjeto.alto
+    const derechaMascota = mascotaJugadorObjeto.x + mascotaJugadorObjeto.ancho
+    const izquierdaMascota = mascotaJugadorObjeto.x
+
+    if (abajoMascota < arribaEnemigo || 
+        arribaMascota > abajoEnemigo ||
+        derechaMascota < izquierdaEnemigo ||
+        izquierdaMascota > derechaEnemigo) {
+            return 
+        } 
+        clearInterval(intervalo)
+        detenerMovimiento()
+        sectionSeleccionarAtaque.style.display = 'flex'
+        sectionVerMapa.style.display = 'none'
+        seleccionarMascotaEnemigo(enemigo)
+        //alert("hay colisión con " + enemigo.nombre)
 }
 
 window.addEventListener('load', iniciarJuego) // Metodo de window para que el codigo JS se corra luego de que se cargué el HTML completo
