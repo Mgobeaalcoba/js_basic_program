@@ -169,6 +169,22 @@ function iniciarJuego() {
     botonMascotaJugador.addEventListener('click', seleccionarMascotaJugador)
 
     botonReiniciar.addEventListener('click', reiniciarJuego)
+
+    unirseAlJuego()
+}
+
+function unirseAlJuego() { // Función de comunicación del frontend con el backend
+    // Petición hacia el servidor con función fetch() de Javascript
+    fetch("http://localhost:3000/unirse") // Por defecto es una petición de tipo Get, pero puedo cambiarla con un segundo argumento
+        .then(function (res) {
+            console.log(res)
+            if (res.ok) {
+                res.text()
+                    .then(function (respuesta) {
+                        console.log(respuesta)
+                    })
+            }
+        })
 }
 
 function seleccionarMascotaJugador() {
