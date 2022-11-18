@@ -1,8 +1,12 @@
 // Importamos Express desde la carpeta node_modules
 const express = require('express')
+const cors = require("cors")
 
 // Creamos la aplicación de Express
 const app = express()
+
+app.use(cors()) // Desabilito posibles errores relacionados con post
+app.use(express.json()) // Habilito el uso de json en mis intercambios
 
 // Escojemos un puerto por el que el servidor web escuchará
 const port = 3000
@@ -13,6 +17,21 @@ const jugadores = []
 class Jugador {
     constructor(id) {
         this.id = id
+    }
+
+    asignarMokepon (mokepon) { // Creo un metodo para la clase Jugador
+        this.mokepon = mokepon
+    }
+
+    actualizarPosicion(x, y) {
+        this.x = x
+        this.y = y
+    }
+}
+
+class Mokepon {
+    constructor(nombre) {
+        this.nombre = nombre
     }
 }
 
@@ -29,6 +48,40 @@ app.get("/unirse", (req, res) => {
 
     res.send(id)
 })
+
+app.post("/mokepon/:jugadorId", (req, res) => {
+    const jugadorId = req.params.jugadorId || "" // Requerimiento de la API // Traigo el id del jugador que llama el servidor y sino viene el mismo un string vacio
+    const nombre = req.body.mokepon || ""
+    const mokepon = new Mokepon(nombre)
+    
+    const jugadorIndex = jugadores.findIndex((jugador) => jugadorId === jugador.id)
+
+    if (jugadorIndex >= 0) {
+        jugadores[jugadorIndex].asignarMokepon(mokepon)
+    }
+
+    console.log(jugadores)
+    console.log(jugadorId)
+    res.end() // respuesta de la API
+}) // los : en node implican que luego va una variable. 
+
+app.post("/mokepon/:jugadorId/posicion", (req, res) => {
+    const jugadorId = req.params.jugadorId || ""
+    const x = req.body.x || 0
+    const y = req.body.y || 0
+  
+    const jugadorIndex = jugadores.findIndex((jugador) => jugadorId === jugador.id)
+  
+    if (jugadorIndex >= 0) {
+      jugadores[jugadorIndex].actualizarPosicion(x, y)
+    }
+
+    const enemigos = jugadores.filter((jugador) => jugadorId !== jugador.id)
+  
+    res.send({
+        enemigos
+    })
+  })
 
 // Activamos el servidor en el puerto 3000
 app.listen(port, () => {

@@ -49,6 +49,7 @@ let mapaBackground = new Image()
 mapaBackground.src = './assets/mokemap.png' // importante para que salga bien que el archivo JS esté a la misma altura que la carpeta assets
 let alturaQueBuscamos
 let anchoDelMapa = window.innerWidth -20 // Función que busca y determina el ancho de la pantalla en la que se ejecuta el programa.
+let jugadorId = null
 
 if (anchoDelMapa > anchoMaximoDelMapa) {
     anchoDelMapa = anchoMaximoDelMapa -20
@@ -97,80 +98,71 @@ let HipodogeEnemigo = new Mokepon('Hipodoge', './assets/Fuecoco.png', 5, './asse
 let CapipeyoEnemigo = new Mokepon('Capipeyo','./assets/Gible-Pokemon-PNG-HD-Quality.png', 5, './assets/Gible-Pokemon-PNG-HD-Quality.png')
 let RatigueyaEnemigo = new Mokepon('Ratigueya', './assets/Wurmple.png', 5, './assets/Wurmple.png')
 
-
-Hipodoge.ataques.push(
+const HIPODOGE_ATAQUES = [
     { nombre: '💧', id: 'boton-agua' },
     { nombre: '💧', id: 'boton-agua' },
     { nombre: '💧', id: 'boton-agua' },
     { nombre: '🔥', id: 'boton-fuego' },
     { nombre: '🌿', id: 'boton-planta'}
-)
+]
 
-Capipeyo.ataques.push(
+const CAPIPEYO_ATAQUES = [
     { nombre: '🌿', id: 'boton-planta' },
     { nombre: '🌿', id: 'boton-planta' },
     { nombre: '🌿', id: 'boton-planta'},
     { nombre: '💧', id: 'boton-agua' },
     { nombre: '🔥', id: 'boton-fuego' }
-)
+]
 
-Ratigueya.ataques.push(
+const RATIGUEYA_ATAQUES = [
     { nombre: '🔥', id: 'boton-fuego' },
     { nombre: '🔥', id: 'boton-fuego' },
     { nombre: '🔥', id: 'boton-fuego' },
     { nombre: '💧', id: 'boton-agua' },
     { nombre: '🌿', id: 'boton-planta'}
-)
+]
 
-Langostelvis.ataques.push(
+const LANGOSTELVIS_ATAQUES = [
     { nombre: '🔥', id: 'boton-fuego' },
     { nombre: '🔥', id: 'boton-fuego' },
     { nombre: '💧', id: 'boton-agua' },
     { nombre: '💧', id: 'boton-agua' },
     { nombre: '🌿', id: 'boton-planta'}
-)
+]
 
-
-Tucapalma.ataques.push(
+const TUCAPALMA_ATAQUES = [
     { nombre: '🔥', id: 'boton-fuego' },
     { nombre: '🔥', id: 'boton-fuego' },
     { nombre: '🌿', id: 'boton-planta' },
     { nombre: '🌿', id: 'boton-planta'},
     { nombre: '💧', id: 'boton-agua' }
-)
+]
 
-
-Pydos.ataques.push(
+const PYDOS_ATAQUES = [
     { nombre: '💧', id: 'boton-agua' },
     { nombre: '💧', id: 'boton-agua' },
     { nombre: '🔥', id: 'boton-fuego' },
     { nombre: '🌿', id: 'boton-planta' },
     { nombre: '🌿', id: 'boton-planta'}
-)
+]
 
-HipodogeEnemigo.ataques.push(
-    { nombre: '💧', id: 'boton-agua' },
-    { nombre: '💧', id: 'boton-agua' },
-    { nombre: '💧', id: 'boton-agua' },
-    { nombre: '🔥', id: 'boton-fuego' },
-    { nombre: '🌿', id: 'boton-planta'}
-)
+Hipodoge.ataques.push(...HIPODOGE_ATAQUES) // Pasa cada ataque de la lista de a uno. Y no toda la lista junta. 
 
-CapipeyoEnemigo.ataques.push(
-    { nombre: '🌿', id: 'boton-planta' },
-    { nombre: '🌿', id: 'boton-planta' },
-    { nombre: '🌿', id: 'boton-planta'},
-    { nombre: '💧', id: 'boton-agua' },
-    { nombre: '🔥', id: 'boton-fuego' }
-)
+Capipeyo.ataques.push(...CAPIPEYO_ATAQUES)
 
-RatigueyaEnemigo.ataques.push(
-    { nombre: '🔥', id: 'boton-fuego' },
-    { nombre: '🔥', id: 'boton-fuego' },
-    { nombre: '🔥', id: 'boton-fuego' },
-    { nombre: '💧', id: 'boton-agua' },
-    { nombre: '🌿', id: 'boton-planta'}
-)
+Ratigueya.ataques.push(...RATIGUEYA_ATAQUES)
+
+Langostelvis.ataques.push(...LANGOSTELVIS_ATAQUES)
+
+Tucapalma.ataques.push(...TUCAPALMA_ATAQUES)
+
+Pydos.ataques.push(...PYDOS_ATAQUES)
+
+HipodogeEnemigo.ataques.push(...HIPODOGE_ATAQUES)
+
+CapipeyoEnemigo.ataques.push(...CAPIPEYO_ATAQUES)
+
+RatigueyaEnemigo.ataques.push(...RATIGUEYA_ATAQUES)
 
 mokepones.push(Hipodoge,Capipeyo,Ratigueya,Langostelvis,Tucapalma,Pydos) //metodo para "empujar" mis mokepones al array
 
@@ -218,6 +210,7 @@ function unirseAlJuego() { // Función de comunicación del frontend con el back
                 res.text()
                     .then(function (respuesta) {
                         console.log(respuesta)
+                        jugadorId = respuesta
                     })
             }
         })
@@ -250,6 +243,8 @@ function seleccionarMascotaJugador() {
         alert('No has seleccionado ninguna mascota... Hazlo')
     }
 
+    seleccionarMokepon(mascotaJugador)
+
     extraerAtaques(mascotaJugador)
 
     sectionVerMapa.style.display = 'flex'
@@ -259,6 +254,20 @@ function seleccionarMascotaJugador() {
     pintarCanvas();
 
     //seleccionarMascotaEnemigo()
+}
+
+function seleccionarMokepon(mascotaJugador) {
+    //fetch("http://localhost:3000/mokepon/" + mascotaJugador )
+    fetch(`http://localhost:3000/mokepon/${jugadorId}`, {
+        method: "post",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            mokepon: mascotaJugador
+        }) // No lleva .then porque no espera una respuesta. Solo envía datos al servidor y listo. Terminó. 
+    } )
+    
 }
 
 function extraerAtaques(mascotaJugador) {
@@ -412,6 +421,9 @@ function pintarCanvas() {
     lienzo.clearRect(0, 0, mapa.width, mapa.height)
     lienzo.drawImage(mapaBackground,0,0, mapa.width, mapa.height)
     mascotaJugadorObjeto.pintarMokepon()
+
+    enviarPosicion(mascotaJugadorObjeto.x, mascotaJugadorObjeto.y)
+
     HipodogeEnemigo.pintarMokepon()
     CapipeyoEnemigo.pintarMokepon()
     RatigueyaEnemigo.pintarMokepon()
@@ -421,6 +433,27 @@ function pintarCanvas() {
         revisarColision(RatigueyaEnemigo)
     }
 
+}
+
+function enviarPosicion(x, y) {
+    fetch(`http://localhost:3000/mokepon/${jugadorId}/posicion`, {
+        method: "post",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            x,
+            y
+        })
+    })
+     .then(function (res) {
+        if (res.ok) {
+            res.json()
+                .then(function ({ enemigos }) { // Extraigo una variable especifica de la respuesta
+                      console.log(enemigos)                  
+                })
+        }
+     })
 }
 
 function moverDerecha() {
