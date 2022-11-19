@@ -61,7 +61,8 @@ mapa.width = anchoDelMapa
 mapa.height = alturaQueBuscamos
 
 class Mokepon {
-    constructor(nombre, foto, vida, fotoMapa) { // Cuando defino valores en el constructor son posibles valores por defecto.
+    constructor(nombre, foto, vida, fotoMapa, id = null) { // Cuando defino valores en el constructor son posibles valores por defecto.
+        this.id = id
         this.nombre = nombre
         this.foto = foto
         this.vida = vida
@@ -94,9 +95,9 @@ let Langostelvis = new Mokepon('Langostelvis', './assets/Cascoon_HOME.png', 5, '
 let Tucapalma = new Mokepon ('Tucapalma','./assets/Quaxly.png', 5, './assets/Quaxly.png')
 let Pydos = new Mokepon('Pydos', './assets/Sprigatito.png', 5, './assets/Sprigatito.png')
 
-let HipodogeEnemigo = new Mokepon('Hipodoge', './assets/Fuecoco.png', 5, './assets/Fuecoco.png')
-let CapipeyoEnemigo = new Mokepon('Capipeyo','./assets/Gible-Pokemon-PNG-HD-Quality.png', 5, './assets/Gible-Pokemon-PNG-HD-Quality.png')
-let RatigueyaEnemigo = new Mokepon('Ratigueya', './assets/Wurmple.png', 5, './assets/Wurmple.png')
+//let HipodogeEnemigo = new Mokepon('Hipodoge', './assets/Fuecoco.png', 5, './assets/Fuecoco.png')
+//let CapipeyoEnemigo = new Mokepon('Capipeyo','./assets/Gible-Pokemon-PNG-HD-Quality.png', 5, './assets/Gible-Pokemon-PNG-HD-Quality.png')
+//let RatigueyaEnemigo = new Mokepon('Ratigueya', './assets/Wurmple.png', 5, './assets/Wurmple.png')
 
 const HIPODOGE_ATAQUES = [
     { nombre: '💧', id: 'boton-agua' },
@@ -158,11 +159,11 @@ Tucapalma.ataques.push(...TUCAPALMA_ATAQUES)
 
 Pydos.ataques.push(...PYDOS_ATAQUES)
 
-HipodogeEnemigo.ataques.push(...HIPODOGE_ATAQUES)
+//HipodogeEnemigo.ataques.push(...HIPODOGE_ATAQUES)
 
-CapipeyoEnemigo.ataques.push(...CAPIPEYO_ATAQUES)
+//CapipeyoEnemigo.ataques.push(...CAPIPEYO_ATAQUES)
 
-RatigueyaEnemigo.ataques.push(...RATIGUEYA_ATAQUES)
+//RatigueyaEnemigo.ataques.push(...RATIGUEYA_ATAQUES)
 
 mokepones.push(Hipodoge,Capipeyo,Ratigueya,Langostelvis,Tucapalma,Pydos) //metodo para "empujar" mis mokepones al array
 
@@ -424,13 +425,13 @@ function pintarCanvas() {
 
     enviarPosicion(mascotaJugadorObjeto.x, mascotaJugadorObjeto.y)
 
-    HipodogeEnemigo.pintarMokepon()
-    CapipeyoEnemigo.pintarMokepon()
-    RatigueyaEnemigo.pintarMokepon()
+    //HipodogeEnemigo.pintarMokepon()
+    //CapipeyoEnemigo.pintarMokepon()
+    //RatigueyaEnemigo.pintarMokepon()
     if(mascotaJugadorObjeto.velocidadX !== 0 || mascotaJugadorObjeto.velocidadY !== 0) {
-        revisarColision(HipodogeEnemigo) 
-        revisarColision(CapipeyoEnemigo)
-        revisarColision(RatigueyaEnemigo)
+        //revisarColision(mokeponEnemigo) 
+        //revisarColision(CapipeyoEnemigo)
+        //revisarColision(RatigueyaEnemigo)
     }
 
 }
@@ -450,7 +451,34 @@ function enviarPosicion(x, y) {
         if (res.ok) {
             res.json()
                 .then(function ({ enemigos }) { // Extraigo una variable especifica de la respuesta
-                      console.log(enemigos)                  
+                    console.log(enemigos)
+                    
+                    enemigos.forEach(function (enemigo) {
+                        let mokeponEnemigo = null
+                        if (enemigo.mokepon != undefined) {
+                            const mokeponNombre = enemigo.mokepon.nombre || ""
+                            if (mokeponNombre === "Hipodoge") {
+                                mokeponEnemigo = new Mokepon('Hipodoge', './assets/Fuecoco.png', 5, './assets/Fuecoco.png')
+                            } else if (mokeponNombre === "Capipeyo") {
+                                mokeponEnemigo = new Mokepon('Capipeyo','./assets/Gible-Pokemon-PNG-HD-Quality.png', 5, './assets/Gible-Pokemon-PNG-HD-Quality.png')
+                            } else if (mokeponNombre === "Ratigueya") {
+                                mokeponEnemigo = new Mokepon('Ratigueya', './assets/Wurmple.png', 5, './assets/Wurmple.png')
+                            } else if ( mokeponNombre === "Langostelvis") {
+                                mokeponEnemigo = new Mokepon('Langostelvis', './assets/Cascoon_HOME.png', 5, './assets/Cascoon_HOME.png')
+                            } else if (mokeponNombre === "Tucapalma") {
+                                mokeponEnemigo = new Mokepon ('Tucapalma','./assets/Quaxly.png', 5, './assets/Quaxly.png')
+                            } else {
+                                mokeponEnemigo = new Mokepon('Pydos', './assets/Sprigatito.png', 5, './assets/Sprigatito.png')
+                            }
+                            console.log(mokeponNombre)
+                            console.log(mokeponEnemigo)
+                            mokeponEnemigo.x = enemigo.x
+                            mokeponEnemigo.y = enemigo.y
+
+                            mokeponEnemigo.pintarMokepon()
+                        }
+                    })
+
                 })
         }
      })
