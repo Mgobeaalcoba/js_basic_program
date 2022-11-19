@@ -1,10 +1,12 @@
 // Importamos Express desde la carpeta node_modules
 const express = require('express')
 const cors = require("cors")
+// http://DESKTOP-S17S4V1.local:3000
 
 // Creamos la aplicación de Express
 const app = express()
 
+app.use(express.static('public'))
 app.use(cors()) // Desabilito posibles errores relacionados con post
 app.use(express.json()) // Habilito el uso de json en mis intercambios
 

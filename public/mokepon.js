@@ -206,7 +206,7 @@ function iniciarJuego() {
 
 function unirseAlJuego() { // Función de comunicación del frontend con el backend
     // Petición hacia el servidor con función fetch() de Javascript
-    fetch("http://localhost:3000/unirse") // Por defecto es una petición de tipo Get, pero puedo cambiarla con un segundo argumento
+    fetch("http://192.168.0.10:3000/unirse") // Por defecto es una petición de tipo Get, pero puedo cambiarla con un segundo argumento
         .then(function (res) {
             console.log(res)
             if (res.ok) {
@@ -220,10 +220,7 @@ function unirseAlJuego() { // Función de comunicación del frontend con el back
 }
 
 function seleccionarMascotaJugador() {
-    //sectionSeleccionarAtaque.style.display = 'flex'
-    sectionSeleccionarMascota.style.display = 'none'    
-
-
+ 
     if (inputHipodoge.checked) {
         spanMascotaJugador.innerHTML =  inputHipodoge.id// Manipulando el DOM
         mascotaJugador = inputHipodoge.id
@@ -244,7 +241,10 @@ function seleccionarMascotaJugador() {
         mascotaJugador = inputPydos.id
     } else {
         alert('No has seleccionado ninguna mascota... Hazlo')
+        return // Tambien se usa para cortar la ejecución de una función. Como en este caso. 
     }
+
+    sectionSeleccionarMascota.style.display = 'none'   
 
     seleccionarMokepon(mascotaJugador)
 
@@ -260,8 +260,8 @@ function seleccionarMascotaJugador() {
 }
 
 function seleccionarMokepon(mascotaJugador) {
-    //fetch("http://localhost:3000/mokepon/" + mascotaJugador )
-    fetch(`http://localhost:3000/mokepon/${jugadorId}`, {
+    //fetch("http://192.168.0.10:3000/mokepon/" + mascotaJugador )
+    fetch(`http://192.168.0.10:3000/mokepon/${jugadorId}`, {
         method: "post",
         headers: {
             "Content-Type": "application/json"
@@ -327,7 +327,7 @@ function secuenciaAtaque() {
 
 function enviarAtaques () {
     console.log(ataquesJugadores)
-    fetch(`http://localhost:3000/mokepon/${jugadorId}/ataques`, {
+    fetch(`http://192.168.0.10:3000/mokepon/${jugadorId}/ataques`, {
         method: "post",
         headers: {
             "Content-Type": "application/json"
@@ -341,7 +341,7 @@ function enviarAtaques () {
 }
 
 function obtenerAtaques() {
-    fetch(`http://localhost:3000/mokepon/${enemigoId}/ataques`)
+    fetch(`http://192.168.0.10:3000/mokepon/${enemigoId}/ataques`)
         .then(function (res) {
             if (res.ok){
                 res.json()
@@ -480,7 +480,7 @@ function pintarCanvas() {
 }
 
 function enviarPosicion(x, y) {
-    fetch(`http://localhost:3000/mokepon/${jugadorId}/posicion`, {
+    fetch(`http://192.168.0.10:3000/mokepon/${jugadorId}/posicion`, {
         method: "post",
         headers: {
             "Content-Type": "application/json"
