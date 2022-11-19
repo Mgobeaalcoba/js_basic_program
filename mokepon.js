@@ -336,7 +336,23 @@ function enviarAtaques () {
             ataques: ataquesJugadores
         })
     })
+
+    intervalo = setInterval(obtenerAtaques, 50)
 }
+
+function obtenerAtaques() {
+    fetch(`http://localhost:3000/mokepon/${enemigoId}/ataques`)
+        .then(function (res) {
+            if (res.ok){
+                res.json()
+                    .then(function({ ataques }){
+                        if(ataques.length === 5) {
+                            ataquesEnemigos = ataques
+                            combate()
+                        }
+                    })
+                }}
+            )}
 
 function seleccionarMascotaEnemigo(enemigo) {
     //let mascotaAleatoria = aleatorio(0, mokepones.length -1)
@@ -371,6 +387,8 @@ function indexAmbosOponentes(jugador, enemigo) {
 }
 
 function combate() {
+    clearInterval(intervalo)
+
     for (let index = 0; index < ataquesJugadores.length; index++) {
         if(ataquesJugadores[index] === ataquesEnemigos[index]) {
             indexAmbosOponentes(index, index)
